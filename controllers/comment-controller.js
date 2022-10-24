@@ -45,21 +45,22 @@ const commentController = {
         .catch(err => res.json(err));
     },
 
+
     // add a reply to a comment
     addReply({ params, body }, res) {
         Comment.findOneAndUpdate(
           { _id: params.commentId },
           { $push: { replies: body } },
-          { new: true }
+          { new: true, runValidators: true }
         )
-          .then(dbPizzaData => {
+        .then(dbPizzaData => {
             if (!dbPizzaData) {
               res.status(404).json({ message: 'No pizza found with this id!' });
               return;
             }
             res.json(dbPizzaData);
-          })
-          .catch(err => res.json(err));
+        })
+        .catch(err => res.json(err));
     },
 
 
